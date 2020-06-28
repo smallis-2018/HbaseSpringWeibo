@@ -1,11 +1,9 @@
 package com.sm.service;
 
 import com.sm.dao.RelationDAO;
-import com.sm.until.HBaseCon;
 import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.CellUtil;
 import org.apache.hadoop.hbase.CompareOperator;
-import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
 import org.apache.hadoop.hbase.filter.BinaryComparator;
@@ -42,10 +40,10 @@ public class RelationService {
         return true;
     }
 
-    public boolean dounfollow(String id, String followId){
+    public boolean doUnFollow(String id, String followId) {
         try {
-            relationDAO.delete(id,"follow",followId);
-            relationDAO.delete(followId,"fans",id);
+            relationDAO.delete(id, "follow", followId);
+            relationDAO.delete(followId, "fans", id);
         } catch (IOException e) {
             e.printStackTrace();
             return false;
