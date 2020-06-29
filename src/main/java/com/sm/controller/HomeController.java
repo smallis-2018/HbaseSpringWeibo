@@ -13,6 +13,9 @@ import java.util.TreeMap;
 @Controller
 @RequestMapping("/home")
 public class HomeController {
+    private static final int FLAG_FOLLOW = 1;
+    private static final int FLAG_STRANGE = 2;
+    private static final int FLAG_FANS = 3;
 
     private final RelationService service;
 
@@ -21,44 +24,47 @@ public class HomeController {
         this.service = service;
     }
 
-    @GetMapping("/getMap")
-    public String getMap(String myId, Model model) {
-        if (myId.equals("")) {
-            myId = (String) model.getAttribute(myId);
-        }
-        TreeMap<String, String> infoMap = service.getUserBaseInfo(myId);
-        TreeMap<String, String> followMap = service.getFollow(myId);
-        TreeMap<String, String> fansMap = service.getFans(myId);
-        TreeMap<String, String> strangerMap = service.getStranger(myId);
-        model.addAttribute("infoMap", infoMap);
-        model.addAttribute("followMap", followMap);
-        model.addAttribute("fansMap", fansMap);
-        model.addAttribute("strangerMap", strangerMap);
-        return "home";
-    }
-
     @GetMapping("/unfollow/{myId}/{followId}")
     public String doUnFollow(@PathVariable String myId, @PathVariable String followId, Model model) {
         boolean c = service.doUnFollow(myId, followId);
-        if (c) {
-            model.addAttribute("checkMsg", "已取消关注");
-        } else {
-            model.addAttribute("checkMsg", "操作失败");
-        }
         model.addAttribute("myId", myId);
-        return "redirect:/home/getMap";
+        return "redirect:/home/getFollow";
     }
 
     @GetMapping("/follow/{myId}/{followId}")
     public String doFollow(@PathVariable String myId, @PathVariable String followId, Model model) {
         boolean c = service.doFollow(myId, followId);
-        if (c) {
-            model.addAttribute("checkMsg", "关注成功啦");
-        } else {
-            model.addAttribute("checkMsg", "操作失败");
-        }
         model.addAttribute("myId", myId);
-        return "redirect:/home/getMap";
+        return "redirect:/home/getStrange";
     }
 
+    @GetMapping("/getFans")
+    public String getFans(String myId, Model model) {
+        TreeMap<String, String> map = service.getFans(myId);
+        TreeMap<String, String> infoMap = service.getUserBaseInfo(myId);
+        model.addAttribute("infoMap", infoMap);
+        model.addAttribute("map", map);
+        model.addAttribute("flag", FLAG_FANS);
+        return "home";
+    }
+
+    @GetMapping("/getFollow")
+    public String getFollow(String myId, Model model) {
+        TreeMap<String, String> map = service.getFollow(myId);
+        TreeMap<String, String> infoMap = service.getUserBaseInfo(myId);
+        model.addAttribute("infoMap", infoMap);
+        model.addAttribute("map", map);
+        model.addAttribute("flag", FLAG_FOLLOW);
+        return "home";
+    }
+
+    @GetMapping("/getStrange")
+    public String getStrange(String myId, Model model) {
+        TreeMap<String, String> map = service.getStranger(myId);
+        TreeMap<String, String> infoMap = service.getUserBaseInfo(myId);
+        model.addAttribute("infoMap", infoMap);
+        model.addAttribute("map", map);
+        model.addAttribute("flag", FLAG_STRANGE);
+        return "home";
+    }
 }

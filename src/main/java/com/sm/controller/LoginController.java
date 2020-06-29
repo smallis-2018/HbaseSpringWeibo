@@ -27,11 +27,12 @@ public class LoginController {
             name = userBaseInfo.get(key);
         }
         if (name.equals("")) {
-            model.addAttribute("checkMsg", "用户不存在");
+            model.addAttribute("checkMsg", "帐号不存在");
             return "../../index";
         } else {
             model.addAttribute("myId", myId);
-            return "redirect:/home/getMap";
+            model.addAttribute("myName", name);
+            return "redirect:/home/getFans";
         }
     }
 

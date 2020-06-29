@@ -108,8 +108,8 @@ public class RelationService {
                         fansMap.put(userId, userName);
                     }
                 }
-            }else {
-                fansMap.put("","");
+            } else {
+                fansMap.put("", "");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -117,15 +117,18 @@ public class RelationService {
         return fansMap;
     }
 
+    //todo 实现查找粉丝
+
+    //todo 限制返回数量
     public TreeMap<String, String> getStranger(String id) {
-        TreeMap<String,String> strangerMap = new TreeMap<String, String>();
-        TreeMap<String,String> followMap;
+        TreeMap<String, String> strangerMap = new TreeMap<String, String>();
+        TreeMap<String, String> followMap;
         //获取关注列表
         followMap = getFollow(id);
         //设置个AND过滤器表
         FilterList filterList = new FilterList(FilterList.Operator.MUST_PASS_ALL);
         //将关注列表里的ID都加入行键过滤器
-        for(String s : followMap.keySet()){
+        for (String s : followMap.keySet()) {
             Filter filter = new RowFilter(
                     CompareOperator.NOT_EQUAL,
                     new BinaryComparator(s.getBytes())
