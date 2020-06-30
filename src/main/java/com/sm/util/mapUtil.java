@@ -1,7 +1,10 @@
 package com.sm.util;
 
+import org.springframework.stereotype.Component;
+
 import java.util.*;
 
+@Component
 public class mapUtil {
 
     public static <k, v> List<TreeMap<k, v>> mapChunk(TreeMap<k, v> chunkMap, int chunkNum) {

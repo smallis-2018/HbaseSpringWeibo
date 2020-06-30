@@ -20,21 +20,24 @@
     <div class="row">
         <div class="col-md-4 order-md-2 mb-4">
             <ul class="list-group mb-3">
-                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                <li class="list-group-item d-flex justify-content-between lh-condensed btn btn-light">
                     <div>
-                        <a class="my-0" href="${pageContext.request.contextPath}/home/getFollow?myId=${myId}">我的关注</a>
+                        <a class="text-decoration-none text-dark"
+                           href="${pageContext.request.contextPath}/home/getFollow?myId=${myId}">我的关注</a>
                         <small class="text-muted">My Follow</small>
                     </div>
                 </li>
-                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                <li class="list-group-item d-flex justify-content-between lh-condensed btn btn-light">
                     <div>
-                        <a class="my-0" href="${pageContext.request.contextPath}/home/getFans?myId=${myId}">我的粉丝</a>
+                        <a class="text-decoration-none text-dark"
+                           href="${pageContext.request.contextPath}/home/getFans?myId=${myId}">我的粉丝</a>
                         <small class="text-muted">My fans</small>
                     </div>
                 </li>
-                <li class="list-group-item d-flex justify-content-between lh-condensed">
+                <li class="list-group-item d-flex justify-content-between lh-condensed btn btn-light">
                     <div>
-                        <a class="my-0" href="${pageContext.request.contextPath}/home/getStrange?myId=${myId}">关注广场</a>
+                        <a class="text-decoration-none text-dark"
+                           href="${pageContext.request.contextPath}/home/getStrange?myId=${myId}">关注广场</a>
                         <small class="text-muted">Find Friends</small>
                     </div>
                 </li>
@@ -57,7 +60,11 @@
                         <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                             <div class="col p-4 d-flex flex-column position-static align-items-center">
                                 <div class="row mb-2">
-                                    <h3 class="mb-0">${map.get(key)}</h3>
+                                        <%--跳转到其他页面的时候，注意修改id--%>
+                                    <a class="text-decoration-none text-dark"
+                                       href="${pageContext.request.contextPath}/other/getFans?myId=${key}">
+                                        <h3 class="mb-0">${map.get(key)}</h3>
+                                    </a>
                                 </div>
 
                                 <c:if test="${flag == 1}">
