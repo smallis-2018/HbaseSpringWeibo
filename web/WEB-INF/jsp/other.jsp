@@ -12,14 +12,19 @@
 <c:set var="myName" value="${infoMap.get(myId)}"/>
 <c:set var="oid" value="${sessionScope.get('oid')}"/>
 <div class="container">
+    <%--头像名称--%>
     <div class="py-5 text-center">
         <img class="d-block mx-auto mb-4 rounded-circle"
              src="${pageContext.request.contextPath}/static/avatar/rick2.svg"
              alt="" width="122" height="122">
         <h2>${myName}</h2>
     </div>
+    <%--头像名称结束--%>
+
 
     <div class="row">
+
+        <%--导航列表--%>
         <div class="col-md-4 order-md-2 mb-4">
             <ul class="list-group mb-3">
                 <li class="list-group-item d-flex justify-content-between lh-condensed btn btn-light mb-md-3">
@@ -54,6 +59,10 @@
                 </div>
             </form>
         </div>
+        <%--导航列表结束--%>
+
+
+        <%--用户列表--%>
         <div class="col-md-8 order-md-1" id="mapList">
             <div class="row mb-2">
                 <c:forEach var="key" items="${map.keySet()}">
@@ -72,11 +81,8 @@
                 </c:forEach>
             </div>
         </div>
+        <%--用户列表结束--%>
     </div>
 </div>
 </body>
-<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
-        crossorigin="anonymous"></script>
 </html>

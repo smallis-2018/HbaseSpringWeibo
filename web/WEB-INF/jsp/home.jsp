@@ -8,16 +8,23 @@
     <title>主页</title>
 </head>
 <body class="bg-light">
+<%--获取信息--%>
 <c:set var="myId" value="${infoMap.keySet().iterator().next()}"/>
 <c:set var="myName" value="${infoMap.get(myId)}"/>
 <div class="container">
+
+    <%--头像名称--%>
     <div class="py-5 text-center">
         <img class="d-block mx-auto mb-4 rounded-circle" src="${pageContext.request.contextPath}/static/avatar/rick.svg"
              alt="" width="122" height="122">
         <h2>${myName}</h2>
     </div>
+    <%--头像名称结束--%>
+
 
     <div class="row">
+
+        <%--导航列表--%>
         <div class="col-md-4 order-md-2 mb-4">
             <ul class="list-group mb-3">
                 <li class="list-group-item d-flex justify-content-between lh-condensed btn btn-light">
@@ -46,19 +53,23 @@
             <form class="card p-2" action="${pageContext.request.contextPath}/home/AreYouAFan" method="post">
                 <div class="input-group">
                     <input type="hidden" class="form-control" name="myId" value="${myId}">
-                    <input type="text" class="form-control" name="fanName" placeholder="你是我的粉丝吗？">
+                    <input type="text" class="form-control" name="fanName" placeholder="他/她是我的粉丝吗？">
                     <div class="input-group-append">
                         <button type="submit" class="btn btn-secondary">查询</button>
                     </div>
                 </div>
             </form>
         </div>
+        <%--导航列表结束--%>
+
+        <%--用户列表--%>
         <div class="col-md-8 order-md-1" id="mapList">
             <div class="row mb-2">
                 <c:forEach var="key" items="${map.keySet()}">
                     <div class="col-md-6">
                         <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
                             <div class="col p-4 d-flex flex-column position-static align-items-center">
+                                    <%--名字--%>
                                 <div class="row mb-2">
                                         <%--跳转到其他页面的时候，注意修改id--%>
                                     <a class="text-decoration-none text-dark"
@@ -67,6 +78,8 @@
                                     </a>
                                 </div>
 
+
+                                    <%--关注/取消关注--%>
                                 <c:if test="${flag == 1}">
                                     <div class="row mb-2">
                                         <form action="${pageContext.request.contextPath}/home/unfollow/${myId}/${key}">
@@ -95,17 +108,16 @@
                                         </form>
                                     </div>
                                 </c:if>
+                                    <%--关注/取消关注结束--%>
+
                             </div>
                         </div>
                     </div>
                 </c:forEach>
             </div>
         </div>
+        <%--用户列表结束--%>
     </div>
 </div>
 </body>
-<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
-        crossorigin="anonymous"></script>
 </html>
