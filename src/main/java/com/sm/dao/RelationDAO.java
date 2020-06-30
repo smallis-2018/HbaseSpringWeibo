@@ -1,13 +1,12 @@
 package com.sm.dao;
 
-import com.sm.until.HBaseCon;
+import com.sm.util.HBaseCon;
 import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.*;
 import org.apache.hadoop.hbase.filter.Filter;
 import org.apache.hadoop.hbase.filter.FilterList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 
 import java.io.IOException;
 
@@ -64,8 +63,9 @@ public class RelationDAO {
         return table.get(get);
     }
 
-    public Result get(String rowKey) throws IOException {
+    public Result get(String rowKey, Filter filter) throws IOException {
         Get get = new Get(rowKey.getBytes());
+        get.setFilter(filter);
         return table.get(get);
     }
 

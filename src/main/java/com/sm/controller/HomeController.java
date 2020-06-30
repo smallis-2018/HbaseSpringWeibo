@@ -6,7 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.TreeMap;
 
@@ -32,9 +34,12 @@ public class HomeController {
     }
 
     @GetMapping("/follow/{myId}/{followId}")
-    public String doFollow(@PathVariable String myId, @PathVariable String followId, Model model) {
+    public String doFollow(@PathVariable String myId, @PathVariable String followId, Model model, RedirectAttributes att) {
         boolean c = service.doFollow(myId, followId);
-        model.addAttribute("myId", myId);
+        if (c) {
+            att.addAttribute("myId", myId);
+            model.addAttribute("checkMsg", "关注成功");
+        }
         return "redirect:/home/getStrange";
     }
 
@@ -65,6 +70,17 @@ public class HomeController {
         model.addAttribute("infoMap", infoMap);
         model.addAttribute("map", map);
         model.addAttribute("flag", FLAG_STRANGE);
+        return "home";
+    }
+
+
+    @PostMapping("/AreYouAFan")
+    public String AreYouAFan(String myId, String fanName, Model model) {
+        TreeMap<String, String> map = service.AreYouAFan(myId, fanName);
+        TreeMap<String, String> infoMap = service.getUserBaseInfo(myId);
+        model.addAttribute("infoMap", infoMap);
+        model.addAttribute("map", map);
+        model.addAttribute("flag", FLAG_FANS);
         return "home";
     }
 }

@@ -2,13 +2,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <html>
-<style>
-
-</style>
 <head>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
     <title>主页</title>
 </head>
 <body class="bg-light">
@@ -18,10 +14,7 @@
     <div class="py-5 text-center">
         <img class="d-block mx-auto mb-4 rounded-circle" src="${pageContext.request.contextPath}/static/avatar/rick.svg"
              alt="" width="122" height="122">
-        <h2>
-
-            ${myName}
-        </h2>
+        <h2>${myName}</h2>
     </div>
 
     <div class="row">
@@ -47,11 +40,10 @@
                 </li>
             </ul>
 
-            <form class="card p-2">
+            <form class="card p-2" action="${pageContext.request.contextPath}/home/AreYouAFan" method="post">
                 <div class="input-group">
-                    <label>
-                        <input type="text" class="form-control" placeholder="你要找谁？">
-                    </label>
+                    <input type="hidden" class="form-control" name="myId" value="${myId}">
+                    <input type="text" class="form-control" name="fanName" placeholder="你是我的粉丝吗？">
                     <div class="input-group-append">
                         <button type="submit" class="btn btn-secondary">查询</button>
                     </div>
@@ -85,7 +77,7 @@
                                 <c:if test="${flag == 2}">
                                     <div class="row mb-2">
                                         <form action="${pageContext.request.contextPath}/home/follow/${myId}/${key}">
-                                            <button class="btn">
+                                            <button class="btn" id="ab">
                                                 <svg t="1593451709125" class="icon" viewBox="0 0 1024 1024"
                                                      version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1142"
                                                      width="20" height="20">
@@ -105,4 +97,8 @@
     </div>
 </div>
 </body>
+<script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
 </html>

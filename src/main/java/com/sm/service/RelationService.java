@@ -1,6 +1,7 @@
 package com.sm.service;
 
 import com.sm.dao.RelationDAO;
+import com.sm.util.mapUtil;
 import org.apache.hadoop.hbase.Cell;
 import org.apache.hadoop.hbase.CellUtil;
 import org.apache.hadoop.hbase.CompareOperator;
@@ -14,7 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.TreeMap;
+import java.util.*;
 
 @Service
 public class RelationService {
@@ -51,10 +52,28 @@ public class RelationService {
         return true;
     }
 
-    public TreeMap<String,String> getUserBaseInfo(String id){
-        TreeMap<String,String> baseMap = new TreeMap<String, String>();
+    public TreeMap<String, String> AreYouAFan(String id, String fanName) {
+        TreeMap<String, String> fanMap = new TreeMap<String, String>();
+        TreeMap<String, String> fansMap = getFans(id);
+        Set<String> keySet = fansMap.keySet();
+        Iterator<String> iterator = keySet.iterator();
+        while (iterator.hasNext()) {
+            String next = iterator.next();
+            String name = fansMap.get(next);
+            if (name.equals(fanName)) {
+                fanMap.put(next, name);
+            }
+        }
+        if (fanMap.isEmpty()) {
+            fanMap.put("", "");
+        }
+        return fanMap;
+    }
+
+    public TreeMap<String, String> getUserBaseInfo(String id) {
+        TreeMap<String, String> baseMap = new TreeMap<String, String>();
         try {
-            Result result = relationDAO.get(id,"base");
+            Result result = relationDAO.get(id, "base");
             if (result != null) {
                 Cell[] cells = result.rawCells();
                 for (Cell cell : cells) {
@@ -94,7 +113,7 @@ public class RelationService {
         return followMap;
     }
 
-    //取关注列表
+    //取粉丝列表
     public TreeMap<String,String> getFans(String id){
         TreeMap<String,String> fansMap = new TreeMap<String, String>();
         try {
@@ -119,7 +138,6 @@ public class RelationService {
 
     //todo 实现查找粉丝
 
-    //todo 限制返回数量
     public TreeMap<String, String> getStranger(String id) {
         TreeMap<String, String> strangerMap = new TreeMap<String, String>();
         TreeMap<String, String> followMap;
@@ -151,15 +169,24 @@ public class RelationService {
                     for (Cell cell : cells) {
                         String getId = new String(CellUtil.cloneRow(cell));
                         String getName = new String(CellUtil.cloneValue(cell));
-                        strangerMap.put(getId,getName);
+                        strangerMap.put(getId, getName);
                     }
                 }
-            }else {
-                strangerMap.put("","");
+            } else {
+                strangerMap.put("", "");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        //切割MAP为十个一组
+        List<TreeMap<String, String>> mapList = mapUtil.mapChunk(strangerMap, 10);
+
+        //随机取得一组数据
+        Random random = new Random();
+        int i = random.nextInt(mapList.size());
+        strangerMap = mapList.get(i);
+
         return strangerMap;
     }
 
