@@ -12,6 +12,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.TreeMap;
 
+/**
+ * 主页控制器
+ */
 @Controller
 @RequestMapping("/home")
 public class HomeController {

@@ -10,6 +10,9 @@ import java.io.IOException;
 
 @Component
 public class HBaseCon {
+
+    private static final String IP = "192.168.37.129";
+
     private Connection connection;
 
     public Connection getConnection() {
@@ -18,17 +21,9 @@ public class HBaseCon {
 
     public HBaseCon() {
         Configuration configuration = HBaseConfiguration.create();
-        configuration.set("hbase.zookeeper.quorum", "192.168.37.129");
+        configuration.set("hbase.zookeeper.quorum", IP);
         try {
             connection = ConnectionFactory.createConnection(configuration);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void close() {
-        try {
-            connection.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

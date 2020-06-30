@@ -24,13 +24,38 @@ public class RelationDAO {
             e.printStackTrace();
         }
     }
-    //put操作
-    public void put(String rowKey, String columnFamilyName, String columnName, String value) throws IOException {
+
+
+    /**
+     * PUT操作
+     *
+     * @param rowKey     行键
+     * @param familyName 列族名
+     * @param columnName 列名
+     * @param value      值
+     */
+    public void put(String rowKey, String familyName, String columnName, String value) throws IOException {
         Put p = new Put(rowKey.getBytes());
-        p.addColumn(columnFamilyName.getBytes(), columnName.getBytes(), value.getBytes());
+        p.addColumn(familyName.getBytes(), columnName.getBytes(), value.getBytes());
         table.put(p);
     }
 
+    /**
+     * 带过滤器的扫描
+     *
+     * @param filter 过滤器
+     */
+    public ResultScanner scan(Filter filter) throws IOException {
+        Scan scan = new Scan();
+        scan.setFilter(filter);
+        return table.getScanner(scan);
+    }
+
+    /**
+     * 带过滤器的扫描，限定扫描的列
+     *
+     * @param filter 过滤器
+     */
     public ResultScanner scan(Filter filter, String[] familyNames, String[] columnNames) throws IOException {
         Scan scan = new Scan();
         scan.setFilter(filter);
@@ -42,13 +67,11 @@ public class RelationDAO {
         return table.getScanner(scan);
     }
 
-    //带过滤器的扫描方法
-    public ResultScanner scan(Filter filter) throws IOException {
-        Scan scan = new Scan();
-        scan.setFilter(filter);
-        return table.getScanner(scan);
-    }
-
+    /**
+     * 带多个过滤器的扫描，限定扫描的列
+     *
+     * @param filterList 过滤器列表
+     */
     public ResultScanner scan(FilterList filterList, String familyName, String columnName) throws IOException {
         Scan scan = new Scan();
         scan.addColumn(familyName.getBytes(), columnName.getBytes());
@@ -56,30 +79,49 @@ public class RelationDAO {
         return table.getScanner(scan);
     }
 
-    //行键和列族获取数据
+    /**
+     * GET操作，限定列族
+     *
+     * @param rowKey     行键
+     * @param familyName 列族
+     */
     public Result get(String rowKey, String familyName) throws IOException {
         Get get = new Get(rowKey.getBytes());
         get.addFamily(familyName.getBytes());
         return table.get(get);
     }
 
+    /**
+     * GET操作，带过滤器
+     *
+     * @param filter 过滤器
+     */
     public Result get(String rowKey, Filter filter) throws IOException {
         Get get = new Get(rowKey.getBytes());
         get.setFilter(filter);
         return table.get(get);
     }
 
+    /**
+     * GET操作，限定列
+     */
     public Result get(String rowKey, String familyName, String columnName) throws IOException {
         Get get = new Get(rowKey.getBytes());
-        get.addColumn(familyName.getBytes(),columnName.getBytes());
+        get.addColumn(familyName.getBytes(), columnName.getBytes());
         return table.get(get);
     }
 
+    /**
+     * 行删除
+     */
     public void delete(String rowKey) throws IOException {
         Delete delete = new Delete(rowKey.getBytes());
         table.delete(delete);
     }
 
+    /**
+     * 列删除
+     */
     public void delete(String rowKey, String familyName, String columnName) throws IOException {
         Delete delete = new Delete(rowKey.getBytes());
         delete.addColumn(familyName.getBytes(), columnName.getBytes());

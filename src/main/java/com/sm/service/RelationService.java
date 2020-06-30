@@ -21,19 +21,27 @@ import java.util.*;
 public class RelationService {
 
     private final RelationDAO relationDAO;
+
     @Autowired
     public RelationService(RelationDAO relationDAO) {
         this.relationDAO = relationDAO;
     }
 
+    /***
+     * 实现关注业务
+     * @param id 关注者id
+     * @param followId 被关注者id
+     */
     public boolean doFollow(String id, String followId) {
         try {
-            //取我的名字
+            //关注者的名字
             String myName = getName(id);
-            //取要关注人的名字
+            //被关注者的名字
             String hisName = getName(followId);
-            relationDAO.put(id,"follow",followId,hisName);
-            relationDAO.put(followId,"fans",id,myName);
+            //记录关注信息
+            relationDAO.put(id, "follow", followId, hisName);
+            //记录粉丝信息
+            relationDAO.put(followId, "fans", id, myName);
         } catch (IOException e) {
             e.printStackTrace();
             return false;
@@ -41,9 +49,16 @@ public class RelationService {
         return true;
     }
 
+    /***
+     * 实现取消关注业务
+     * @param id 关注者id
+     * @param followId 被关注者id
+     */
     public boolean doUnFollow(String id, String followId) {
         try {
+            //删除关注信息
             relationDAO.delete(id, "follow", followId);
+            //删除粉丝信息
             relationDAO.delete(followId, "fans", id);
         } catch (IOException e) {
             e.printStackTrace();
@@ -52,9 +67,19 @@ public class RelationService {
         return true;
     }
 
+    /**
+     * 实现搜索粉丝列表的业务
+     *
+     * @param id      我的id
+     * @param fanName 粉丝名字
+     */
     public TreeMap<String, String> AreYouAFan(String id, String fanName) {
         TreeMap<String, String> fanMap = new TreeMap<String, String>();
+
+        //获取我的粉丝列表
         TreeMap<String, String> fansMap = getFans(id);
+
+        //遍历列表，查找名字符合的粉丝信息，所有符合的信息都加入集合
         Set<String> keySet = fansMap.keySet();
         Iterator<String> iterator = keySet.iterator();
         while (iterator.hasNext()) {
@@ -64,12 +89,18 @@ public class RelationService {
                 fanMap.put(next, name);
             }
         }
+
+        //如果没有查到粉丝信息，返回一个空集合
         if (fanMap.isEmpty()) {
             fanMap.put("", "");
         }
         return fanMap;
     }
 
+
+    /**
+     * 实现获取用户基本信息业务
+     */
     public TreeMap<String, String> getUserBaseInfo(String id) {
         TreeMap<String, String> baseMap = new TreeMap<String, String>();
         try {
@@ -81,8 +112,8 @@ public class RelationService {
                     String userName = new String(CellUtil.cloneValue(cell));
                     baseMap.put(userId, userName);
                 }
-            }else {
-                baseMap.put("","");
+            } else {
+                baseMap.put("", "");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -90,22 +121,24 @@ public class RelationService {
         return baseMap;
     }
 
-    //取关注列表
-    public TreeMap<String,String> getFollow(String id){
-        TreeMap<String,String> followMap = new TreeMap<String, String>();
+    /**
+     * 实现获取关注列表业务
+     */
+    public TreeMap<String, String> getFollow(String id) {
+        TreeMap<String, String> followMap = new TreeMap<String, String>();
         try {
-            Result result = relationDAO.get(id,"follow");
+            Result result = relationDAO.get(id, "follow");
             if (result != null) {
                 Cell[] cells = result.rawCells();
                 for (Cell cell : cells) {
                     String userId = new String(CellUtil.cloneQualifier(cell));
                     String userName = new String(CellUtil.cloneValue(cell));
-                    if(!userId.equals("name")){
+                    if (!userId.equals("name")) {
                         followMap.put(userId, userName);
                     }
                 }
-            }else {
-                followMap.put("","");
+            } else {
+                followMap.put("", "");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -113,17 +146,19 @@ public class RelationService {
         return followMap;
     }
 
-    //取粉丝列表
-    public TreeMap<String,String> getFans(String id){
-        TreeMap<String,String> fansMap = new TreeMap<String, String>();
+    /**
+     * 实现获取粉丝列表业务
+     */
+    public TreeMap<String, String> getFans(String id) {
+        TreeMap<String, String> fansMap = new TreeMap<String, String>();
         try {
-            Result result = relationDAO.get(id,"fans");
+            Result result = relationDAO.get(id, "fans");
             if (result != null) {
                 Cell[] cells = result.rawCells();
                 for (Cell cell : cells) {
                     String userId = new String(CellUtil.cloneQualifier(cell));
                     String userName = new String(CellUtil.cloneValue(cell));
-                    if(!userId.equals("name")){
+                    if (!userId.equals("name")) {
                         fansMap.put(userId, userName);
                     }
                 }
@@ -136,8 +171,9 @@ public class RelationService {
         return fansMap;
     }
 
-    //todo 实现查找粉丝
-
+    /**
+     * 实现随机获取没有关注的人的业务，一次返回十个人
+     */
     public TreeMap<String, String> getStranger(String id) {
         TreeMap<String, String> strangerMap = new TreeMap<String, String>();
         TreeMap<String, String> followMap;
@@ -147,6 +183,7 @@ public class RelationService {
         FilterList filterList = new FilterList(FilterList.Operator.MUST_PASS_ALL);
         //将关注列表里的ID都加入行键过滤器
         for (String s : followMap.keySet()) {
+            //行键过滤器
             Filter filter = new RowFilter(
                     CompareOperator.NOT_EQUAL,
                     new BinaryComparator(s.getBytes())
@@ -190,11 +227,14 @@ public class RelationService {
         return strangerMap;
     }
 
-    public String getName(String id){
+    /**
+     * 实现获取用户名的业务
+     */
+    public String getName(String id) {
         String name = "";
         Result r1;
         try {
-            r1 = relationDAO.get(id,"base","name");
+            r1 = relationDAO.get(id, "base", "name");
             if (r1 != null) {
                 Cell[] cells = r1.rawCells();
                 for (Cell cell : cells) {

@@ -10,6 +10,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.TreeMap;
 
+/**
+ * 登录控制器
+ */
 @Controller
 @SessionAttributes(names = {"oid"}, types = {String.class})
 public class LoginController {

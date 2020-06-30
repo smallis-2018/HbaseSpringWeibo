@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.TreeMap;
 
+/**
+ * 其他用户主页控制器
+ */
 @Controller
 @RequestMapping("/other")
 public class OtherController {

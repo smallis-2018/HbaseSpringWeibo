@@ -7,6 +7,9 @@ import java.util.*;
 @Component
 public class mapUtil {
 
+    /***
+     * 将TreeMap按自定义数量分组
+     */
     public static <k, v> List<TreeMap<k, v>> mapChunk(TreeMap<k, v> chunkMap, int chunkNum) {
         if (chunkMap == null || chunkNum <= 0) {
             List<TreeMap<k, v>> list = new ArrayList<TreeMap<k, v>>();
