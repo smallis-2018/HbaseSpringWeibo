@@ -3,9 +3,9 @@
 
 <html>
 <head>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <title>主页</title>
+    <title>${myName}的主页</title>
 </head>
 <body class="bg-light">
 <c:set var="myId" value="${infoMap.keySet().iterator().next()}"/>
@@ -85,4 +85,5 @@
     </div>
 </div>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
 </html>

@@ -44,4 +44,5 @@
     <span class="alert-danger">${checkMsg}</span>
 </form>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"></script>
 </html>
