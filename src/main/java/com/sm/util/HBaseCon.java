@@ -21,8 +21,10 @@ public class HBaseCon {
 
     public HBaseCon() {
         Configuration configuration = HBaseConfiguration.create();
+        //设置集群地址
         configuration.set("hbase.zookeeper.quorum", IP);
         try {
+            //获取连接
             connection = ConnectionFactory.createConnection(configuration);
         } catch (IOException e) {
             e.printStackTrace();
