@@ -30,9 +30,12 @@ public class HomeController {
     }
 
     @GetMapping("/unfollow/{myId}/{followId}")
-    public String doUnFollow(@PathVariable String myId, @PathVariable String followId, Model model) {
+    public String doUnFollow(@PathVariable String myId, @PathVariable String followId, Model model, RedirectAttributes att) {
         boolean c = service.doUnFollow(myId, followId);
-        model.addAttribute("myId", myId);
+        if (c) {
+            att.addAttribute("myId", myId);
+            model.addAttribute("checkMsg", "取消关注成功");
+        }
         return "redirect:/home/getFollow";
     }
 
