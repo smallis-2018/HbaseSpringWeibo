@@ -12,7 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.List;
+import java.util.TreeMap;
 
 @Service
 public class RelationService {
@@ -65,27 +66,72 @@ public class RelationService {
     }
 
     /**
+     * 搜索用户
+     *
+     * @param name 用户名字
+     * @param maps 要查找的列表
+     */
+    public TreeMap<String, String> findUser(String name, TreeMap<String, String> maps) {
+        TreeMap<String, String> map = new TreeMap<String, String>();
+
+        //设置个AND过滤器表
+        FilterList andFilterList = new FilterList(FilterList.Operator.MUST_PASS_ALL);
+        //设置个OR过滤器表
+        FilterList orFilterList = new FilterList(FilterList.Operator.MUST_PASS_ONE);
+        //将列表里的ID都加入行键过滤器
+        for (String s : maps.keySet()) {
+            //行键过滤器
+            Filter filter = new RowFilter(
+                    CompareOperator.EQUAL,
+                    new BinaryComparator(s.getBytes())
+            );
+            //满足一个ID就行
+            orFilterList.addFilter(filter);
+        }
+
+        //名字单值模糊过滤
+        Filter filter = new SingleColumnValueFilter(
+                "base".getBytes(),
+                "name".getBytes(),
+                CompareOperator.EQUAL,
+                new SubstringComparator(name)
+        );
+        //ID和名字同时满足
+        andFilterList.addFilter(filter);
+        andFilterList.addFilter(orFilterList);
+
+        try {
+            ResultScanner resultScanner = relationDAO.scan(andFilterList, "base", "name");
+            if (resultScanner != null) {
+                for (Result result : resultScanner) {
+                    Cell[] cells = result.rawCells();
+                    for (Cell cell : cells) {
+                        String getId = new String(CellUtil.cloneRow(cell));
+                        String getName = new String(CellUtil.cloneValue(cell));
+                        map.put(getId, getName);
+                    }
+                }
+            } else {
+                map.put("", "");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+
+    /**
      * 实现搜索粉丝列表的业务
      *
      * @param id      我的id
      * @param fanName 粉丝名字
      */
     public TreeMap<String, String> AreYouAFan(String id, String fanName) {
-        TreeMap<String, String> fanMap = new TreeMap<String, String>();
-
         //获取我的粉丝列表
         TreeMap<String, String> fansMap = getFans(id);
 
-        //遍历列表，查找名字符合的粉丝信息，所有符合的信息都加入集合
-        Set<String> keySet = fansMap.keySet();
-        Iterator<String> iterator = keySet.iterator();
-        while (iterator.hasNext()) {
-            String next = iterator.next();
-            String name = fansMap.get(next);
-            if (name.equals(fanName)) {
-                fanMap.put(next, name);
-            }
-        }
+        return findUser(fanName, fansMap);
+    }
 
         //如果没有查到粉丝信息，返回一个空集合
         if (fanMap.isEmpty()) {
