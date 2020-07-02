@@ -133,11 +133,17 @@ public class RelationService {
         return findUser(fanName, fansMap);
     }
 
-        //如果没有查到粉丝信息，返回一个空集合
-        if (fanMap.isEmpty()) {
-            fanMap.put("", "");
-        }
-        return fanMap;
+    /**
+     * 实现搜索陌生人列表的业务
+     *
+     * @param id   我的id
+     * @param name 粉丝名字
+     */
+    public TreeMap<String, String> AreYouNotAFan(String id, String name) {
+
+        TreeMap<String, String> strangerMap = getStranger(id);
+
+        return findUser(name, strangerMap);
     }
 
 
