@@ -68,6 +68,18 @@ public class RelationDAO {
     }
 
     /**
+     * 带多个过滤器的扫描，限定扫描的列族
+     *
+     * @param filterList 过滤器列表
+     */
+    public ResultScanner scan(FilterList filterList, String familyName) throws IOException {
+        Scan scan = new Scan();
+        scan.addFamily(familyName.getBytes());
+        scan.setFilter(filterList);
+        return table.getScanner(scan);
+    }
+
+    /**
      * 带多个过滤器的扫描，限定扫描的列
      *
      * @param filterList 过滤器列表

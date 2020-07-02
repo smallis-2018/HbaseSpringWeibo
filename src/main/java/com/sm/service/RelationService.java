@@ -268,6 +268,61 @@ public class RelationService {
         return strangerMap;
     }
 
+    public TreeMap<String, String> followBackMap(String id) {
+        TreeMap<String, String> map, followMap;
+
+        map = new TreeMap<String, String>();
+
+        /**
+         * 1、查询关注的用户ID
+         * 2、根据用户ID在粉丝列族中查找相同ID的人
+         */
+
+        //设置个AND过滤器表
+        FilterList andFilterList = new FilterList(FilterList.Operator.MUST_PASS_ALL);
+        //设置个OR过滤器表
+        FilterList orFilterList = new FilterList(FilterList.Operator.MUST_PASS_ONE);
+
+        followMap = getFollow(id);
+        //将列表里的ID都加入过滤器
+        for (String s : followMap.keySet()) {
+            //列值过滤器
+            Filter filter = new QualifierFilter(
+                    CompareOperator.EQUAL,
+                    new BinaryComparator(s.getBytes())
+            );
+            orFilterList.addFilter(filter);
+        }
+
+        Filter filter = new RowFilter(
+                CompareOperator.EQUAL,
+                new BinaryComparator(id.getBytes())
+        );
+
+        andFilterList.addFilter(filter);
+        andFilterList.addFilter(orFilterList);
+
+        try {
+            //扫描Fans列族
+            ResultScanner resultScanner = relationDAO.scan(andFilterList, "fans");
+            if (resultScanner != null) {
+                for (Result result : resultScanner) {
+                    Cell[] cells = result.rawCells();
+                    for (Cell cell : cells) {
+                        String getId = new String(CellUtil.cloneRow(cell));
+                        String getName = new String(CellUtil.cloneValue(cell));
+                        map.put(getId, getName);
+                    }
+                }
+            } else {
+                map.put("", "");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+
     /**
      * 实现获取用户名的业务
      */
