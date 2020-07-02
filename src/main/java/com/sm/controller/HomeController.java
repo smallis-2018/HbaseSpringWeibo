@@ -72,6 +72,7 @@ public class HomeController {
     @GetMapping("/getStrange")
     public String getStrange(String myId, Model model) {
         TreeMap<String, String> map = service.getStranger(myId);
+        map = service.getMapPage(map, 1);
         TreeMap<String, String> infoMap = service.getUserBaseInfo(myId);
         model.addAttribute("infoMap", infoMap);
         model.addAttribute("map", map);

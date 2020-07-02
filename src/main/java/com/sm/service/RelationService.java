@@ -7,10 +7,7 @@ import org.apache.hadoop.hbase.CellUtil;
 import org.apache.hadoop.hbase.CompareOperator;
 import org.apache.hadoop.hbase.client.Result;
 import org.apache.hadoop.hbase.client.ResultScanner;
-import org.apache.hadoop.hbase.filter.BinaryComparator;
-import org.apache.hadoop.hbase.filter.Filter;
-import org.apache.hadoop.hbase.filter.FilterList;
-import org.apache.hadoop.hbase.filter.RowFilter;
+import org.apache.hadoop.hbase.filter.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -216,14 +213,6 @@ public class RelationService {
             e.printStackTrace();
         }
 
-        //切割MAP为十个一组
-        List<TreeMap<String, String>> mapList = mapUtil.mapChunk(strangerMap, 10);
-
-        //随机取得一组数据
-        Random random = new Random();
-        int i = random.nextInt(mapList.size());
-        strangerMap = mapList.get(i);
-
         return strangerMap;
     }
 
@@ -245,5 +234,12 @@ public class RelationService {
             e.printStackTrace();
         }
         return name;
+    }
+
+    public TreeMap<String, String> getMapPage(TreeMap<String, String> map, Integer page) {
+        //切割MAP为十个一组
+        List<TreeMap<String, String>> mapList = mapUtil.mapChunk(map, 10);
+
+        return mapList.get(page);
     }
 }
