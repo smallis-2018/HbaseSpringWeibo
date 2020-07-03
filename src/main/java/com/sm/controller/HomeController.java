@@ -39,14 +39,17 @@ public class HomeController {
         return "redirect:/home/getFollow";
     }
 
-    @GetMapping("/follow/{myId}/{followId}")
-    public String doFollow(@PathVariable String myId, @PathVariable String followId, Model model, RedirectAttributes att) {
+    @GetMapping("/follow/{myId}/{followId}/{flag}")
+    public String doFollow(@PathVariable String myId, @PathVariable String followId, @PathVariable String flag, Model model, RedirectAttributes att) {
         boolean c = service.doFollow(myId, followId);
         if (c) {
             att.addAttribute("myId", myId);
             model.addAttribute("checkMsg", "关注成功");
         }
-        return "redirect:/home/getStrange";
+        if (flag.equals("2")) {
+            return "redirect:/home/getStrange";
+        }
+        return "redirect:/home/getFans";
     }
 
     @GetMapping("/getFans")
