@@ -342,6 +342,10 @@ public class RelationService {
         return remove(getFans(id), followBackMap(id));
     }
 
+    public TreeMap<String, String> getFollowNoFans(String id) {
+        return remove(getFollow(id), followBackMap(id));
+    }
+
     /**
      * 实现获取用户名的业务
      */

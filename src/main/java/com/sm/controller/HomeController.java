@@ -67,10 +67,13 @@ public class HomeController {
 
     @GetMapping("/getFollow")
     public String getFollow(String myId, Model model) {
-        TreeMap<String, String> map = service.getFollow(myId);
+        //TreeMap<String, String> map = service.getFollow(myId);
+        TreeMap<String, String> map = service.getFollowNoFans(myId);
+        TreeMap<String, String> followBackMap = service.followBackMap(myId);
         TreeMap<String, String> infoMap = service.getUserBaseInfo(myId);
         model.addAttribute("infoMap", infoMap);
         model.addAttribute("map", map);
+        model.addAttribute("followBackMap", followBackMap);
         model.addAttribute("flag", FLAG_FOLLOW);
         return "home";
     }
