@@ -309,9 +309,11 @@ public class RelationService {
                 for (Result result : resultScanner) {
                     Cell[] cells = result.rawCells();
                     for (Cell cell : cells) {
-                        String getId = new String(CellUtil.cloneRow(cell));
-                        String getName = new String(CellUtil.cloneValue(cell));
-                        map.put(getId, getName);
+                        String userId = new String(CellUtil.cloneQualifier(cell));
+                        String userName = new String(CellUtil.cloneValue(cell));
+                        if (!userId.equals("name")) {
+                            map.put(userId, userName);
+                        }
                     }
                 }
             } else {
