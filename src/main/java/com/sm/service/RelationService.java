@@ -283,6 +283,11 @@ public class RelationService {
         //设置个OR过滤器表
         FilterList orFilterList = new FilterList(FilterList.Operator.MUST_PASS_ONE);
 
+        orFilterList.addFilter(new QualifierFilter(
+                CompareOperator.EQUAL,
+                new BinaryComparator("".getBytes())
+        ));
+
         followMap = getFollow(id);
         //将列表里的ID都加入过滤器
         for (String s : followMap.keySet()) {
@@ -323,6 +328,18 @@ public class RelationService {
             e.printStackTrace();
         }
         return map;
+    }
+
+
+    public TreeMap<String, String> remove(TreeMap<String, String> toMap, TreeMap<String, String> fromMap) {
+        for (String key : fromMap.keySet()) {
+            toMap.remove(key);
+        }
+        return toMap;
+    }
+
+    public TreeMap<String, String> getFansNoFollow(String id) {
+        return remove(getFans(id), followBackMap(id));
     }
 
     /**
