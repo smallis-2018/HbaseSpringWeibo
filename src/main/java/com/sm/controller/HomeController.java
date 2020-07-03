@@ -21,6 +21,7 @@ public class HomeController {
     private static final int FLAG_FOLLOW = 1;
     private static final int FLAG_STRANGE = 2;
     private static final int FLAG_FANS = 3;
+    private static final int FLAG_FANS2 = 4;
 
     private final RelationService service;
 
@@ -96,7 +97,7 @@ public class HomeController {
         TreeMap<String, String> infoMap = service.getUserBaseInfo(myId);
         model.addAttribute("infoMap", infoMap);
         model.addAttribute("map", map);
-        model.addAttribute("flag", FLAG_FANS);
+        model.addAttribute("flag", FLAG_FANS2);
         return "home";
     }
 }

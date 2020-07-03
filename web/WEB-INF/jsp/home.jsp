@@ -13,6 +13,9 @@
 <c:if test="${flag==3}">
     <c:set var="mapName" value="我的粉丝"/>
 </c:if>
+<c:if test="${flag==4}">
+    <c:set var="mapName" value="我的粉丝"/>
+</c:if>
 <html>
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"
@@ -110,7 +113,16 @@
                                             </form>
                                         </div>
                                     </c:if>
-
+                                            <c:if test="${flag == 2||flag == 3}">
+                                                <div class="row mb-2">
+                                                        <%--占位--%>
+                                                    <svg t="1593451709125" class="icon" viewBox="0 0 1024 1024"
+                                                         version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                                         p-id="1142"
+                                                         width="46" height="50">
+                                                    </svg>
+                                                </div>
+                                            </c:if>
                                 </div>
                             </div>
                         </div>
@@ -131,7 +143,7 @@
                                     </div>
 
 
-                                        <%--关注/取消关注--%>
+                                                <%--关注/取消关注--%>
                                     <c:if test="${flag == 1}">
                                         <div class="row mb-2">
                                             <form action="${pageContext.request.contextPath}/home/unfollow/${myId}/${key}">
