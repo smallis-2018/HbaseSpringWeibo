@@ -29,10 +29,13 @@ public class OtherController {
 
     @GetMapping("/getFans")
     public String getFans(String myId, Model model) {
-        TreeMap<String, String> map = service.getFans(myId);
+        //TreeMap<String, String> map = service.getFans(myId);
+        TreeMap<String, String> map = service.getFansNoFollow(myId);
+        TreeMap<String, String> followBackMap = service.followBackMap(myId);
         TreeMap<String, String> infoMap = service.getUserBaseInfo(myId);
         model.addAttribute("infoMap", infoMap);
         model.addAttribute("map", map);
+        model.addAttribute("followBackMap", followBackMap);
         model.addAttribute("flag", FLAG_FANS);
         return "other";
     }

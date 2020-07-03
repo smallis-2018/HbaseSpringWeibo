@@ -75,6 +75,32 @@
             <div class="col-md-8 order-md-1" id="mapList">
                 <h4 class="mb-3">${mapName}</h4>
                 <div class="row mb-2">
+                    <%--相互关注列表--%>
+                    <c:forEach var="key" items="${followBackMap.keySet()}">
+                        <div class="col-md-6">
+                            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                                <div class="col p-4 d-flex flex-column position-static align-items-center">
+                                        <%--名字--%>
+                                    <div class="row mb-2">
+                                            <%--跳转到其他页面的时候，注意修改id--%>
+                                        <a class="text-decoration-none text-dark"
+                                           href="${pageContext.request.contextPath}/other/getFans?myId=${key}">
+                                            <h3 class="mb-0">${followBackMap.get(key)}</h3>
+                                        </a>
+                                        <div class="mb-2 d-flex flex-column position-static">
+                                            <svg t="1593747250164" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                                                 xmlns="http://www.w3.org/2000/svg" p-id="8426" width="20" height="20">
+                                                <path d="M790.784 552.96l1.792 0.725333H896l-85.333333 82.858667-0.469334-0.042667-132.949333 132.992-51.498667-51.285333 81.536-81.706667H128v-82.773333l662.016-0.042667 0.768-0.725333zM347.306667 213.333333l51.370666 51.626667L317.013333 346.581333H896v82.858667H234.154667l-0.426667 0.426667-0.981333-0.426667H128l85.333333-82.816 0.64-0.042667L347.306667 213.333333z"
+                                                      fill="#1296db" p-id="8427"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </c:forEach>
+                    <%--相互关注列表结束--%>
+
                     <c:forEach var="key" items="${map.keySet()}">
                         <div class="col-md-6">
                             <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
@@ -104,17 +130,17 @@
                                         </form>
                                     </div>
                                 </c:if>
-                                <c:if test="${flag == 2}">
-                                    <div class="row mb-2">
-                                        <form action="${pageContext.request.contextPath}/home/follow/${myId}/${key}">
-                                            <button class="btn" id="ab">
-                                                <svg t="1593451709125" class="icon" viewBox="0 0 1024 1024"
-                                                     version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1142"
-                                                     width="20" height="20">
-                                                    <path d="M512 928c-28.928 0-57.92-12.672-86.624-41.376L106.272 564C68.064 516.352 32 471.328 32 384c0-141.152 114.848-256 256-256 53.088 0 104 16.096 147.296 46.592 14.432 10.176 17.92 30.144 7.712 44.608-10.176 14.432-30.08 17.92-44.608 7.712C366.016 204.064 327.808 192 288 192c-105.888 0-192 86.112-192 192 0 61.408 20.288 90.112 59.168 138.688l315.584 318.816C486.72 857.472 499.616 863.808 512 864c12.704 0.192 24.928-6.176 41.376-22.624l316.672-319.904C896.064 493.28 928 445.696 928 384c0-105.888-86.112-192-192-192-48.064 0-94.08 17.856-129.536 50.272l-134.08 134.112c-12.512 12.512-32.736 12.512-45.248 0s-12.512-32.736 0-45.248L562.24 196c48.32-44.192 109.664-68 173.76-68 141.152 0 256 114.848 256 256 0 82.368-41.152 144.288-75.68 181.696l-317.568 320.8C569.952 915.328 540.96 928 512 928z"
-                                                          p-id="1143" fill="#d81e06"></path>
-                                                </svg>
-                                            </button>
+                                    <c:if test="${flag == 2||flag == 3}">
+                                        <div class="row mb-2">
+                                            <form action="${pageContext.request.contextPath}/home/follow/${myId}/${key}">
+                                                <button class="btn" id="ab">
+                                                    <svg t="1593451709125" class="icon" viewBox="0 0 1024 1024"
+                                                         version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1142"
+                                                         width="20" height="20">
+                                                        <path d="M512 928c-28.928 0-57.92-12.672-86.624-41.376L106.272 564C68.064 516.352 32 471.328 32 384c0-141.152 114.848-256 256-256 53.088 0 104 16.096 147.296 46.592 14.432 10.176 17.92 30.144 7.712 44.608-10.176 14.432-30.08 17.92-44.608 7.712C366.016 204.064 327.808 192 288 192c-105.888 0-192 86.112-192 192 0 61.408 20.288 90.112 59.168 138.688l315.584 318.816C486.72 857.472 499.616 863.808 512 864c12.704 0.192 24.928-6.176 41.376-22.624l316.672-319.904C896.064 493.28 928 445.696 928 384c0-105.888-86.112-192-192-192-48.064 0-94.08 17.856-129.536 50.272l-134.08 134.112c-12.512 12.512-32.736 12.512-45.248 0s-12.512-32.736 0-45.248L562.24 196c48.32-44.192 109.664-68 173.76-68 141.152 0 256 114.848 256 256 0 82.368-41.152 144.288-75.68 181.696l-317.568 320.8C569.952 915.328 540.96 928 512 928z"
+                                                              p-id="1143" fill="#d81e06"></path>
+                                                    </svg>
+                                                </button>
                                         </form>
                                     </div>
                                 </c:if>

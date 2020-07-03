@@ -73,6 +73,32 @@
             <div class="col-md-8 order-md-1" id="mapList">
                 <h4 class="mb-3">${mapName}</h4>
                 <div class="row mb-2">
+                    <%--相互关注列表--%>
+                    <c:forEach var="key" items="${followBackMap.keySet()}">
+                        <div class="col-md-6">
+                            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+                                <div class="col p-4 d-flex flex-column position-static align-items-center">
+                                        <%--名字--%>
+                                    <div class="row mb-2">
+                                            <%--跳转到其他页面的时候，注意修改id--%>
+                                        <a class="text-decoration-none text-dark"
+                                           href="${pageContext.request.contextPath}/other/getFans?myId=${key}">
+                                            <h3 class="mb-0">${followBackMap.get(key)}</h3>
+                                        </a>
+                                        <div class="mb-2 d-flex flex-column position-static">
+                                            <svg t="1593747250164" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                                                 xmlns="http://www.w3.org/2000/svg" p-id="8426" width="20" height="20">
+                                                <path d="M790.784 552.96l1.792 0.725333H896l-85.333333 82.858667-0.469334-0.042667-132.949333 132.992-51.498667-51.285333 81.536-81.706667H128v-82.773333l662.016-0.042667 0.768-0.725333zM347.306667 213.333333l51.370666 51.626667L317.013333 346.581333H896v82.858667H234.154667l-0.426667 0.426667-0.981333-0.426667H128l85.333333-82.816 0.64-0.042667L347.306667 213.333333z"
+                                                      fill="#1296db" p-id="8427"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </c:forEach>
+                    <%--相互关注列表结束--%>
+
                     <c:forEach var="key" items="${map.keySet()}">
                         <div class="col-md-6">
                             <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
