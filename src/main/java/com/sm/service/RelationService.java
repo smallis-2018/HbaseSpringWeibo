@@ -283,6 +283,7 @@ public class RelationService {
         //设置个OR过滤器表
         FilterList orFilterList = new FilterList(FilterList.Operator.MUST_PASS_ONE);
 
+        //防止空列表时，FilterList失效，加入一个空列值过滤器
         orFilterList.addFilter(new QualifierFilter(
                 CompareOperator.EQUAL,
                 new BinaryComparator("".getBytes())
