@@ -8,12 +8,9 @@
     <c:set var="mapName" value="我的关注"/>
 </c:if>
 <c:if test="${flag==2}">
-    <c:set var="mapName" value="用户广场"/>
+    <c:set var="mapName" value="关注广场"/>
 </c:if>
-<c:if test="${flag==3}">
-    <c:set var="mapName" value="我的粉丝"/>
-</c:if>
-<c:if test="${flag==4}">
+<c:if test="${flag==3 || flag==4}">
     <c:set var="mapName" value="我的粉丝"/>
 </c:if>
 <html>
